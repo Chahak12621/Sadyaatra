@@ -1,36 +1,231 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛕 SadYaatra AI
 
-## Getting Started
+> **Your AI-powered travel companion for exploring Incredible India**
 
-First, run the development server:
+SadYaatra AI is a full-stack travel platform that combines conversational AI trip planning, real-time agent-user chat, flight/train/hotel bookings, and a verified driver network — all in one seamless experience.
+
+---
+
+## ✨ Features
+
+### 👤 For Travelers
+- 🤖 **AI Trip Planner** — Chat with Groq-powered LLaMA AI to generate personalized day-by-day itineraries based on destination, duration, group size, and budget
+- ✈️ **Smart Bookings** — Browse and select flights, trains, and hotels in one unified interface
+- 💬 **Chat with Drivers** — Browse verified agents and open real-time side-panel chat before booking
+- 📋 **Booking Confirmation** — Full trip summary with cost breakdown after checkout
+- 📊 **Traveler History** — View past trips, agent ratings, and activity logs
+
+### 🚗 For Agents (Drivers)
+- 📥 **Live Chat Inbox** — See all incoming user messages in real-time, no trip request table needed
+- 💬 **Realtime Messaging** — Reply to users instantly via Supabase Realtime WebSocket
+- 📈 **Agent Dashboard** — Dark-themed portal with earnings overview, trip history, and performance metrics
+- 🟢 **Online/Offline Toggle** — Control availability status
+
+### 🔐 Authentication
+- Separate sign-up flows for **users** and **agents**
+- Agent registration with document uploads (Aadhar, PAN, licence, vehicle RC)
+- Admin approval workflow for agents (`pending_review` → `approved`)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth |
+| Realtime | Supabase Realtime (WebSockets) |
+| Storage | Supabase Storage |
+| AI | Groq API (LLaMA 3.1 8B Instant) |
+| Client | `@supabase/ssr` (browser client) |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- A [Supabase](https://supabase.com) project
+- A [Groq](https://console.groq.com) API key
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/sadyaatra.git
+cd sadyaatra
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file in the root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+GROQ_API_KEY=your_groq_api_key
+```
+
+### 4. Set up Supabase
+
+Run the following SQL in your **Supabase SQL Editor**:
+
+```sql
+-- Enable Realtime on chat_messages
+ALTER PUBLICATION supabase_realtime ADD TABLE chat_messages;
+
+-- RLS: Allow users to send messages
+CREATE POLICY "Send own messages" ON public.chat_messages
+  FOR INSERT WITH CHECK (auth.uid() = sender_id);
+
+-- RLS: Allow users to read their own messages  
+CREATE POLICY "Read own messages" ON public.chat_messages
+  FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
+
+-- RLS: Allow anyone to view approved agents
+CREATE POLICY "Public can view approved agents"
+  ON public.agent_profiles FOR SELECT
+  USING (status = 'approved');
+
+-- Approve all registered agents (for testing)
+UPDATE agent_profiles SET status = 'approved';
+```
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+sadyaatra/
+├── app/
+│   ├── (dashboard)/
+│   │   ├── dashboard/          # User traveler history
+│   │   ├── bookings/           # Flights, trains, hotels + checkout
+│   │   ├── plan-trip/          # AI chat trip planner
+│   │   └── agents/             # Browse & chat with drivers
+│   ├── agent/
+│   │   └── dashboard/          # Agent portal with chat inbox
+│   ├── api/
+│   │   └── plan-trip-chat/     # Groq AI route
+│   └── auth/                   # Login / signup pages
+├── components/
+│   ├── AgentsList.tsx          # Driver cards with inline chat
+│   ├── AgentChatInbox.tsx      # Agent-side message inbox
+│   ├── RealtimeChat.tsx        # Shared chat component (inline + modal)
+│   ├── Sidebar.tsx             # Navigation sidebar
+│   └── UserTripsList.tsx       # Trip request list (agent side)
+└── lib/
+    └── supabase.ts             # Supabase client + all DB helpers
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 💬 Realtime Chat Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+User (AgentsList page)                    Agent (Dashboard)
+        │                                        │
+        │  clicks "Chat with Driver"             │
+        │──────────────────────────────────────▶ │
+        │                                        │
+        │        Supabase chat_messages          │
+        │◀──────── INSERT (realtime) ───────────▶│
+        │                                        │
+        │  subscribeToChatMessages()             │
+        │  dual .on() listeners                  │
+        │  (sender→receiver both directions)     │
+```
 
-## Deploy on Vercel
+Messages flow through **Supabase Realtime** with `postgres_changes` subscriptions — no polling, no third-party services.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🗄️ Database Schema
+
+| Table | Purpose |
+|-------|---------|
+| `user_profiles` | Traveler accounts |
+| `agent_profiles` | Driver profiles with documents + approval status |
+| `chat_messages` | All messages between users and agents |
+
+---
+
+## 🌍 App Flow
+
+```
+Landing Page
+    ↓
+Sign Up (User or Agent)
+    ↓
+User: Plan Trip (AI Chat) → Get Itinerary → Book (Flights/Trains/Hotels)
+    ↓                                              ↓
+    └──────────────── Pay Now ────────────▶ Booking Confirmed
+                                                   ↓
+                                         Find a Driver (/agents)
+                                                   ↓
+                                         Chat with Driver (Realtime)
+                                                   ↓
+                                    Agent sees message in Dashboard Inbox
+                                                   ↓
+                                         Agent replies in realtime
+```
+
+---
+
+## 🔑 Key Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous/public key |
+| `GROQ_API_KEY` | Groq API key for LLaMA AI |
+
+---
+
+## 📸 Screenshots
+
+| Page | Description |
+|------|-------------|
+| AI Trip Planner | Chat interface with dynamic itinerary panel |
+| Bookings | Flight/train/hotel selection with live cost summary |
+| Agents Page | Driver cards with inline side-panel chat |
+| Agent Dashboard | Dark-themed portal with live chat inbox |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+  <strong>Built with ❤️ for Incredible India 🇮🇳</strong><br/>
+  <sub>Powered by Next.js • Supabase • Groq AI</sub>
+</div>
