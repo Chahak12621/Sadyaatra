@@ -186,7 +186,7 @@ export default function UserLoginPage() {
       if (mode === "login") {
         const { user } = await signIn(form.email, form.password);
 
-        // Check this is a "user" role (not an agent trying to log in here)
+        
         const role = user?.user_metadata?.role;
         if (role === "agent") {
           flash("This is a traveller login. Please use the Agent portal.", "error");
@@ -198,7 +198,7 @@ export default function UserLoginPage() {
         setTimeout(() => { window.location.href = "/user/home"; }, 1500);
       } else {
         await signUpUser(form.email, form.password, form.name);
-        // Supabase sends a confirmation email by default
+       
         setVerified(true);
         flash("🎉 Account created! Check your email to confirm. Now you can login", "success");
       }

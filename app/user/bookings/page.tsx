@@ -117,6 +117,44 @@ export default function BookingsPage() {
       stops: 0,
       price: 6800,
     },
+    {
+  id: 4,
+  airline: "SpiceJet",
+  logo: "🌶️",
+  departure: "DEL",
+  depTime: "06:30",
+  arrival: "IXC",
+  arrTime: "09:00",
+  duration: "2h 30m",
+  stops: 0,
+  badge: "Early Bird",
+  price: 3800,
+},
+{
+  id: 5,
+  airline: "Go First",
+  logo: "🟠",
+  departure: "DEL",
+  depTime: "16:45",
+  arrival: "IXC",
+  arrTime: "19:15",
+  duration: "2h 30m",
+  stops: 0,
+  price: 4900,
+},
+{
+  id: 6,
+  airline: "Akasa Air",
+  logo: "🟡",
+  departure: "DEL",
+  depTime: "20:00",
+  arrival: "IXC",
+  arrTime: "22:30",
+  duration: "2h 30m",
+  stops: 1,
+  badge: "Evening Deal",
+  price: 3500,
+},
   ];
 
   const trains: Train[] = [
@@ -144,6 +182,42 @@ export default function BookingsPage() {
       class: "Chair Car",
       price: 450,
     },
+    {
+  id: 3,
+  name: "Shatabdi Express",
+  number: "12005",
+  departure: "NDLS",
+  depTime: "07:20",
+  arrival: "CDG",
+  arrTime: "11:00",
+  duration: "3h 40m",
+  class: "CC",
+  price: 1100,
+},
+{
+  id: 4,
+  name: "Jan Shatabdi",
+  number: "12057",
+  departure: "NDLS",
+  depTime: "15:00",
+  arrival: "CDG",
+  arrTime: "19:20",
+  duration: "4h 20m",
+  class: "2S",
+  price: 320,
+},
+{
+  id: 5,
+  name: "Intercity Express",
+  number: "14033",
+  departure: "NDLS",
+  depTime: "10:30",
+  arrival: "KLK",
+  arrTime: "16:00",
+  duration: "5h 30m",
+  class: "SL",
+  price: 560,
+},
   ];
 
   const hotels: Hotel[] = [
@@ -173,7 +247,34 @@ export default function BookingsPage() {
       amenities: ["Drivers", "WiFi", "Restaurant"],
       image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
       pricePerNight: 8500,
-    }
+    },
+    {
+  id: 4,
+  name: "Radisson Blu",
+  location: "Battleground, Shimla",
+  rating: 4.5,
+  amenities: ["Pool", "WiFi", "Bar", "Parking"],
+  image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9",
+  pricePerNight: 12000,
+},
+{
+  id: 5,
+  name: "Hotel Combermere",
+  location: "The Mall Road, Shimla",
+  rating: 4.3,
+  amenities: ["WiFi", "Restaurant", "Room Service"],
+  image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4",
+  pricePerNight: 6500,
+},
+{
+  id: 6,
+  name: "Honeymoon Inn",
+  location: "Kufri, Shimla",
+  rating: 4.1,
+  amenities: ["Mountain View", "Bonfire", "WiFi"],
+  image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c",
+  pricePerNight: 4200,
+},
   ];
 
 
@@ -211,7 +312,7 @@ export default function BookingsPage() {
             <input
               type="text"
               placeholder="Search destinations..."
-              className="w-80 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-80 px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
             />
             <button className="p-2 hover:bg-slate-100 rounded-lg">
               <span className="text-xl">🔔</span>
@@ -273,7 +374,7 @@ export default function BookingsPage() {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
-                <div className="bg-blue-50 rounded-xl p-6 text-center">
+                <div className="bg-blue-50 rounded-2xl p-6 text-center border border-blue-100 hover:shadow-md transition">
                   <div className="text-4xl mb-2">✈️</div>
                   <div className="font-bold text-slate-800">Flights</div>
                   <div className="text-sm text-slate-600">200+ airlines</div>
@@ -379,9 +480,11 @@ export default function BookingsPage() {
                               <div className="text-center">
                                 <div className="text-slate-500">{flight.duration}</div>
                                 <div className="flex items-center gap-1 text-slate-400 text-xs">
-                                  <span>—————</span>
-                                  <span>✈️</span>
-                                  <span>—————</span>
+                                  <div className="flex items-center gap-1 text-slate-300">
+                                    <div className="h-px w-12 bg-slate-200"></div>
+                                    <svg className="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" /></svg>
+                                    <div className="h-px w-12 bg-slate-200"></div>
+                                  </div>
                                 </div>
                                 <div className="text-slate-500">
                                   {flight.stops === 0 ? "Non-stop" : `${flight.stops} stop`}
@@ -501,132 +604,132 @@ export default function BookingsPage() {
 
                     {/* Checkout */}
                     {activeTab === "checkout" && (
-  <div className="bg-white rounded-xl p-8 shadow">
-    {!bookingConfirmed ? (
-      <>
-        <h2 className="text-2xl font-bold text-slate-800 mb-6">Review Your Booking</h2>
-        <div className="space-y-4">
-          {selectedFlight && (
-            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">✈️</span>
-                <div>
-                  <div className="font-semibold">{selectedFlight.airline}</div>
-                  <div className="text-sm text-slate-600">{selectedFlight.departure} → {selectedFlight.arrival}</div>
-                </div>
-              </div>
-              <div className="font-bold">₹{selectedFlight.price.toLocaleString()}</div>
-            </div>
-          )}
-          {selectedTrain && (
-            <div className="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🚂</span>
-                <div>
-                  <div className="font-semibold">{selectedTrain.name}</div>
-                  <div className="text-sm text-slate-600">{selectedTrain.class}</div>
-                </div>
-              </div>
-              <div className="font-bold">₹{selectedTrain.price.toLocaleString()}</div>
-            </div>
-          )}
-          {selectedHotel && (
-            <div className="flex justify-between items-center p-4 bg-orange-50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🏨</span>
-                <div>
-                  <div className="font-semibold">{selectedHotel.name}</div>
-                  <div className="text-sm text-slate-600">1 night</div>
-                </div>
-              </div>
-              <div className="font-bold">₹{selectedHotel.pricePerNight.toLocaleString()}</div>
-            </div>
-          )}
-        </div>
-        <div className="mt-6 pt-6 border-t flex justify-between items-center mb-6">
-          <div className="text-lg font-semibold">Total Amount</div>
-          <div className="text-3xl font-bold text-blue-600">₹{totalCost.toLocaleString()}</div>
-        </div>
-        <button
-          onClick={() => setTimeout(() => setBookingConfirmed(true), 800)}
-          className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg"
-        >
-          Pay Now →
-        </button>
-      </>
-    ) : (
-      /* ── Booking Confirmed Screen ── */
-      <div className="text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">✅</div>
-        <h2 className="text-2xl font-bold text-slate-800 mb-2">Booking Confirmed!</h2>
-        <p className="text-slate-500 mb-8">Your trip is all set. Here's your booking summary.</p>
+                      <div className="bg-white rounded-xl p-8 shadow">
+                        {!bookingConfirmed ? (
+                          <>
+                            <h2 className="text-2xl font-bold text-slate-800 mb-6">Review Your Booking</h2>
+                            <div className="space-y-4">
+                              {selectedFlight && (
+                                <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">✈️</span>
+                                    <div>
+                                      <div className="font-semibold">{selectedFlight.airline}</div>
+                                      <div className="text-sm text-slate-600">{selectedFlight.departure} → {selectedFlight.arrival}</div>
+                                    </div>
+                                  </div>
+                                  <div className="font-bold">₹{selectedFlight.price.toLocaleString()}</div>
+                                </div>
+                              )}
+                              {selectedTrain && (
+                                <div className="flex justify-between items-center p-4 bg-purple-50 rounded-lg">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🚂</span>
+                                    <div>
+                                      <div className="font-semibold">{selectedTrain.name}</div>
+                                      <div className="text-sm text-slate-600">{selectedTrain.class}</div>
+                                    </div>
+                                  </div>
+                                  <div className="font-bold">₹{selectedTrain.price.toLocaleString()}</div>
+                                </div>
+                              )}
+                              {selectedHotel && (
+                                <div className="flex justify-between items-center p-4 bg-orange-50 rounded-lg">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🏨</span>
+                                    <div>
+                                      <div className="font-semibold">{selectedHotel.name}</div>
+                                      <div className="text-sm text-slate-600">1 night</div>
+                                    </div>
+                                  </div>
+                                  <div className="font-bold">₹{selectedHotel.pricePerNight.toLocaleString()}</div>
+                                </div>
+                              )}
+                            </div>
+                            <div className="mt-6 pt-6 border-t flex justify-between items-center mb-6">
+                              <div className="text-lg font-semibold">Total Amount</div>
+                              <div className="text-3xl font-bold text-blue-600">₹{totalCost.toLocaleString()}</div>
+                            </div>
+                            <button
+                              onClick={() => setTimeout(() => setBookingConfirmed(true), 800)}
+                              className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg"
+                            >
+                              Pay Now →
+                            </button>
+                          </>
+                        ) : (
+                          /* ── Booking Confirmed Screen ── */
+                          <div className="text-center">
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">✅</div>
+                            <h2 className="text-2xl font-bold text-slate-800 mb-2">Booking Confirmed!</h2>
+                            <p className="text-slate-500 mb-8">Your trip is all set. Here's your booking summary.</p>
 
-        <div className="text-left space-y-3 mb-8">
-          {selectedFlight && (
-            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-xl border border-blue-100">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">✈️</span>
-                <div>
-                  <div className="font-semibold text-slate-800">{selectedFlight.airline}</div>
-                  <div className="text-sm text-slate-500">{selectedFlight.departure} → {selectedFlight.arrival}</div>
-                </div>
-              </div>
-              <div>
-                <div className="font-bold text-slate-800">₹{selectedFlight.price.toLocaleString()}</div>
-                <div className="text-xs text-green-600 text-right">Confirmed</div>
-              </div>
-            </div>
-          )}
-          {selectedTrain && (
-            <div className="flex justify-between items-center p-4 bg-purple-50 rounded-xl border border-purple-100">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🚂</span>
-                <div>
-                  <div className="font-semibold text-slate-800">{selectedTrain.name}</div>
-                  <div className="text-sm text-slate-500">{selectedTrain.class}</div>
-                </div>
-              </div>
-              <div>
-                <div className="font-bold text-slate-800">₹{selectedTrain.price.toLocaleString()}</div>
-                <div className="text-xs text-green-600 text-right">Confirmed</div>
-              </div>
-            </div>
-          )}
-          {selectedHotel && (
-            <div className="flex justify-between items-center p-4 bg-orange-50 rounded-xl border border-orange-100">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">🏨</span>
-                <div>
-                  <div className="font-semibold text-slate-800">{selectedHotel.name}</div>
-                  <div className="text-sm text-slate-500">1 night</div>
-                </div>
-              </div>
-              <div>
-                <div className="font-bold text-slate-800">₹{selectedHotel.pricePerNight.toLocaleString()}</div>
-                <div className="text-xs text-green-600 text-right">Confirmed</div>
-              </div>
-            </div>
-          )}
+                            <div className="text-left space-y-3 mb-8">
+                              {selectedFlight && (
+                                <div className="flex justify-between items-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">✈️</span>
+                                    <div>
+                                      <div className="font-semibold text-slate-800">{selectedFlight.airline}</div>
+                                      <div className="text-sm text-slate-500">{selectedFlight.departure} → {selectedFlight.arrival}</div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-slate-800">₹{selectedFlight.price.toLocaleString()}</div>
+                                    <div className="text-xs text-green-600 text-right">Confirmed</div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectedTrain && (
+                                <div className="flex justify-between items-center p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🚂</span>
+                                    <div>
+                                      <div className="font-semibold text-slate-800">{selectedTrain.name}</div>
+                                      <div className="text-sm text-slate-500">{selectedTrain.class}</div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-slate-800">₹{selectedTrain.price.toLocaleString()}</div>
+                                    <div className="text-xs text-green-600 text-right">Confirmed</div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectedHotel && (
+                                <div className="flex justify-between items-center p-4 bg-orange-50 rounded-xl border border-orange-100">
+                                  <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🏨</span>
+                                    <div>
+                                      <div className="font-semibold text-slate-800">{selectedHotel.name}</div>
+                                      <div className="text-sm text-slate-500">1 night</div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-slate-800">₹{selectedHotel.pricePerNight.toLocaleString()}</div>
+                                    <div className="text-xs text-green-600 text-right">Confirmed</div>
+                                  </div>
+                                </div>
+                              )}
 
-          {/* Total */}
-          <div className="flex justify-between items-center p-4 bg-slate-800 rounded-xl">
-            <div className="font-bold text-white text-lg">Total Paid</div>
-            <div className="text-2xl font-black text-white">₹{totalCost.toLocaleString()}</div>
-          </div>
-        </div>
+                              {/* Total */}
+                              <div className="flex justify-between items-center p-4 bg-slate-800 rounded-xl">
+                                <div className="font-bold text-white text-lg">Total Paid</div>
+                                <div className="text-2xl font-black text-white">₹{totalCost.toLocaleString()}</div>
+                              </div>
+                            </div>
 
-        <button
-          onClick={() => window.location.href = "/user/agents"}
-          className="w-full py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition"
-        >
-          Find a Driver →
-        </button>
-      </div>
-    )}
-  </div>
-)}
-</div>
-</div>
+                            <button
+                              onClick={() => window.location.href = "/user/agents"}
+                              className="w-full py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg transition"
+                            >
+                              Find a Driver →
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
                 {/* Right: Selection summary */}
                 <div className="w-80">
                   <div className="bg-linear-to-br from-blue-50 to-purple-50 rounded-2xl p-6 shadow sticky top-6">

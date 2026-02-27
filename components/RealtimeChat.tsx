@@ -9,7 +9,7 @@ interface RealtimeChatProps {
   otherUserName: string;
   otherUserAvatar: string;
   onClose: () => void;
-  inline?: boolean; // ← when true, renders as side panel instead of full modal
+  inline?: boolean; 
 }
 
 export default function RealtimeChat({
@@ -33,8 +33,11 @@ export default function RealtimeChat({
   useEffect(() => {
     const channel = subscribeToChatMessages(currentUserId, otherUserId, (newMessage) => {
       setMessages((prev) => {
-        // Avoid duplicates
-        if (prev.find((m) => m.id === newMessage.id)) return prev;
+        if (prev.find((m) => m.id === newMessage.id || 
+  (m.message === newMessage.message && 
+   m.sender_id === newMessage.sender_id && 
+   Math.abs(new Date(m.created_at).getTime() - new Date(newMessage.created_at).getTime()) < 3000)
+)) return prev;
         return [...prev, newMessage];
       });
     });
@@ -56,19 +59,33 @@ export default function RealtimeChat({
     }
   };
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
-    setLoading(true);
-    try {
-      await sendChatMessage(currentUserId, currentUserRole, otherUserId, input);
-      setInput("");
-    } catch (err) {
-      console.error("Failed to send message:", JSON.stringify(err));
-      alert("Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+ const handleSend = async () => {
+  if (!input.trim() || loading) return;
+  setLoading(true);
+  const optimisticMsg: ChatMessage = {
+    id: `temp-${Date.now()}`,
+    sender_id: currentUserId,
+    receiver_id: otherUserId,
+    message: input,
+    created_at: new Date().toISOString(),
+    sender_role: currentUserRole,
+    read: false,
   };
+  setMessages((prev) => [...prev, optimisticMsg]);
+  const sentText = input;
+  setInput("");
+  try {
+    await sendChatMessage(currentUserId, currentUserRole, otherUserId, sentText);
+  } catch (err) {
+    // Remove the optimistic message if send failed
+    setMessages((prev) => prev.filter((m) => m.id !== optimisticMsg.id));
+    setInput(sentText);
+    console.error("Failed to send message:", JSON.stringify(err));
+    alert("Failed to send message. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
