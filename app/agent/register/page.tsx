@@ -490,7 +490,7 @@ function Step4({form,setForm,errors}:{form:AgentForm;setForm:React.Dispatch<Reac
           <input type="checkbox" checked={form.agreeTerms} onChange={()=>toggle("agreeTerms")}/>
           <div className="checkbox-item-text">
             <strong>Terms of Service & Agent Agreement</strong>
-            I agree to SunTreasure AI&apos;s Terms of Service, Agent Code of Conduct, and the Agent Commission & Payment Policy. I understand I must maintain a minimum 4.0 rating.
+            I agree to Sadyaatra AI&apos;s Terms of Service, Agent Code of Conduct, and the Agent Commission & Payment Policy. I understand I must maintain a minimum 4.0 rating.
           </div>
         </label>
         {errors.agreeTerms&&<div className="field-err" style={{marginTop:-8}}>{errors.agreeTerms}</div>}
@@ -499,7 +499,7 @@ function Step4({form,setForm,errors}:{form:AgentForm;setForm:React.Dispatch<Reac
           <input type="checkbox" checked={form.agreeBackground} onChange={()=>toggle("agreeBackground")}/>
           <div className="checkbox-item-text">
             <strong>Background Verification Consent</strong>
-            I consent to SunTreasure AI conducting a background verification check including police verification, document authenticity checks, and vehicle inspection as part of the onboarding process.
+            I consent to Sadyaatra AI conducting a background verification check including police verification, document authenticity checks, and vehicle inspection as part of the onboarding process.
           </div>
         </label>
         {errors.agreeBackground&&<div className="field-err" style={{marginTop:-8}}>{errors.agreeBackground}</div>}
@@ -656,7 +656,7 @@ export default function AgentRegisterPage() {
       <style dangerouslySetInnerHTML={{ __html: CSS }}/>
       <Cursor/>
       <header className="reg-header">
-        <div className="reg-logo">Sun<span style={{color:"rgba(255,255,255,.55)"}}>Treasure</span><span className="reg-logo-dot">.</span>AI</div>
+        <div className="reg-logo">Sadyaatra<span style={{color:"rgba(255,255,255,.55)"}}></span><span className="reg-logo-dot">.</span>AI</div>
       </header>
       <div className="success-wrap">
         <div className="success-icon">🎉</div>
@@ -690,7 +690,7 @@ export default function AgentRegisterPage() {
 
       {/* Header */}
       <header className="reg-header">
-        <div className="reg-logo">Sun<span style={{color:"rgba(255,255,255,.55)"}}>Treasure</span><span className="reg-logo-dot">.</span>AI</div>
+        <div className="reg-logo">Sadyaatra<span style={{color:"rgba(255,255,255,.55)"}}></span><span className="reg-logo-dot">.</span>AI</div>
         <button className="reg-back" onClick={()=>window.location.href="/agent/login"}>← Agent Login</button>
       </header>
 
