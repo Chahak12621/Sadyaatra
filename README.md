@@ -75,6 +75,7 @@ GROQ_API_KEY=your_groq_api_key
 ```
 
 ### 4. Set up Supabase
+## The database tables information and schema sql is provided in schema.md ##
 
 Run the following SQL in your **Supabase SQL Editor**:
 
