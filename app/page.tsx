@@ -932,7 +932,7 @@ function Hero() {
         </p>
         <div className="st-hero-search">
           <input type="text" placeholder="Where do you dream of going?" />
-          <button onClick={() => window.location.href = "/user/login"}>Start Planning ✦</button>
+          <button onClick={() => alert("Please download our app to start personalizing and planning your trip!")}>Start Planning ✦</button>
         </div>
         <div className="st-hero-tags">
           {[
@@ -1200,15 +1200,15 @@ function CtaSection() {
     <section className="st-cta" id="contact">
       <div className="st-cta-content">
         <Reveal>
-          <span className="st-cta-eyebrow">Ready to start your story?</span>
-          <h2>Ready for your next adventure?</h2>
+          <span className="st-cta-eyebrow">Ready to personalize and plan?</span>
+          <h2>Download our app to craft your perfect itinerary</h2>
           <p>
             Join thousands of smart travelers already using Sadyaatra AI to craft
-            extraordinary journeys around the world.
+            extraordinary journeys around the world. Planning and personalization happens exclusively on our mobile app!
           </p>
           <div className="st-cta-buttons">
-            <button className="st-btn-white" onClick={() => window.location.href = "/user/login"}>
-              🗺️ Start Planning
+            <button className="st-btn-white" onClick={() => alert("Redirecting to App Store / Play Store...")}>
+              📱 Download App
             </button>
             <button className="st-btn-outline-white" onClick={() => window.location.href = "/agent/login"}>
               ✈️ Join as an Agent
@@ -1276,6 +1276,30 @@ export default function LandingPage() {
       <main>
         <Hero />
         <Ticker />
+        
+        {/* placeholder for 3D Rendering / AR Exploration Section */}
+        <section id="explore-3d" className="st-3d-section" style={{ padding: "100px 60px", background: "#000", color: "#fff", textAlign: "center" }}>
+          <div className="st-reveal">
+            <span className="st-section-label" style={{ color: "#0ea5e9" }}>Immersive Experience</span>
+            <h2 className="st-section-title" style={{ color: "#fff" }}>Explore in 3D Rendering</h2>
+            <p className="st-section-subtitle" style={{ margin: "0 auto", color: "rgba(255,255,255,0.7)" }}>
+              Experience your favorite destinations like never before with our high-fidelity 3D renderings.
+            </p>
+            <div className="st-3d-placeholder" style={{ 
+              marginTop: "40px", 
+              height: "500px", 
+              background: "linear-gradient(45deg, #111, #222)", 
+              borderRadius: "24px", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center",
+              border: "1px dashed rgba(255,255,255,0.2)"
+            }}>
+              <p style={{ fontStyle: "italic", opacity: 0.5 }}>[ placeholder for Three.js / Spline 3D Viewer ]</p>
+            </div>
+          </div>
+        </section>
+
         <Features />
         <Destinations />
         <StatsBand />

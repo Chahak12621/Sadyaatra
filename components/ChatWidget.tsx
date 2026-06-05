@@ -84,10 +84,10 @@ export default function ChatWidget() {
     setLoading(true);
     try {
       const history = [...msgs, userMsg].map(m => ({ role: m.role, text: m.text }));
-      const res = await fetch("/api/chat", {
+      const res = await fetch("/api/explore-chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({ messages: history, place: "General Exploration" }),
       });
       const data = await res.json();
       setMsgs(m => [...m, { role: "bot", text: data.reply }]);
@@ -150,6 +150,14 @@ export default function ChatWidget() {
 
           {/* Input */}
           <div className="chat-input-row">
+            {/* placeholder for Voice Bot / Microphone Button */}
+            <button 
+              className="chat-voice-btn" 
+              onClick={() => alert("Voice assistant coming soon!")}
+              style={{ background: "none", border: "none", fontSize: "1.2rem", cursor: "pointer", marginRight: "4px" }}
+            >
+              🎤
+            </button>
             <textarea
               className="chat-input"
               placeholder="Ask me anything about travel..."
